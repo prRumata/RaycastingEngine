@@ -15,7 +15,7 @@ private:
 	sf::VertexBuffer m_buffer;
 	// sf::Vertex * m_pixels;
 
-	// sf::VertexArray m_lines;
+	sf::VertexArray m_lines;
 
 	sf::Text m_fps_text;
 	sf::Font m_font;

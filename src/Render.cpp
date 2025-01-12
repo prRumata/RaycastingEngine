@@ -104,7 +104,7 @@ Render::Render(Player& player, sf::RenderWindow& window, Map& map) :
     m_window(window),
     m_map(map),
     m_rays(),
-    // m_lines(sf::Lines, SCREEN_WIDTH * 2),
+    m_lines(sf::Lines, SCREEN_WIDTH * 2),
     m_buffer(sf::Lines),
     // m_pixels(new sf::Vertex[SCREEN_HEIGHT * SCREEN_WIDTH]),
     m_fps(0.0f)
@@ -112,13 +112,13 @@ Render::Render(Player& player, sf::RenderWindow& window, Map& map) :
 {
     m_buffer.create(size_t(SCREEN_WIDTH));
 
-    for (size_t x = 0; x < SCREEN_WIDTH; ++x)
-    {
-        for (size_t y = 0; y < SCREEN_HEIGHT; ++y)
-        {
-            m_pixels[x * SCREEN_HEIGHT + y].position = sf::Vector2f((float)x, (float)y);
-        }
-    }
+    // for (size_t x = 0; x < SCREEN_WIDTH; ++x)
+    // {
+    //     for (size_t y = 0; y < SCREEN_HEIGHT; ++y)
+    //     {
+    //         m_pixels[x * SCREEN_HEIGHT + y].position = sf::Vector2f((float)x, (float)y);
+    //     }
+    // }
     m_font.setSmooth(false);
     m_font.loadFromFile("res/font.otf");
     m_fps_text = sf::Text(std::to_string(m_fps), m_font, 18);
