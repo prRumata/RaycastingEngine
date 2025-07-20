@@ -2,84 +2,78 @@
 
 void Input::keysCheck()
 {
-    sf::Event event;
-    while (m_window.pollEvent(event))
+    while (const std::optional event = m_window.pollEvent())
     {
-        switch (event.type)
+        if (event->is<sf::Event::Closed>())
         {
-        // Закрыть
-        case sf::Event::Closed:
             m_window.close();
-            break;
+        }
 
-        // Проверка на нажатия клавиш
-        case sf::Event::KeyPressed:
-            switch (event.key.code)
+        else if (const auto* keyPressed = event->getIf<sf::Event::KeyPressed>())
+        {
+            if (keyPressed->scancode == sf::Keyboard::Scancode::Escape)
+                m_window.close();
+            switch (keyPressed->scancode)
             {
-            case sf::Keyboard::W:
+            case sf::Keyboard::Scancode::W:
                 m_key_is_pressed["W"] = true;
                 break;
 
-            case sf::Keyboard::A:
+            case sf::Keyboard::Scancode::A:
                 m_key_is_pressed["A"] = true;
                 break;
 
-            case sf::Keyboard::S:
+            case sf::Keyboard::Scancode::S:
                 m_key_is_pressed["S"] = true;
                 break;
 
-            case sf::Keyboard::D:
+            case sf::Keyboard::Scancode::D:
                 m_key_is_pressed["D"] = true;
                 break;
 
-            case sf::Keyboard::Q:
+            case sf::Keyboard::Scancode::Q:
                 m_key_is_pressed["Q"] = true;
                 break;
 
-            case sf::Keyboard::E:
+            case sf::Keyboard::Scancode::E:
                 m_key_is_pressed["E"] = true;
                 break;
             
             default:
                 break;
             }
-            break;
-
-        // Проверка на отпускание клавиш
-        case sf::Event::KeyReleased:
-
-            switch (event.key.code)
+        }
+        else if (const auto* keyReleased = event->getIf<sf::Event::KeyReleased>())
+        {
+            switch (keyReleased->scancode)
             {
-            case sf::Keyboard::W:
+            case sf::Keyboard::Scancode::W:
                 m_key_is_pressed["W"] = false;
                 break;
 
-            case sf::Keyboard::A:
+            case sf::Keyboard::Scancode::A:
                 m_key_is_pressed["A"] = false;
                 break;
 
-            case sf::Keyboard::S:
+            case sf::Keyboard::Scancode::S:
                 m_key_is_pressed["S"] = false;
                 break;
 
-            case sf::Keyboard::D:
+            case sf::Keyboard::Scancode::D:
                 m_key_is_pressed["D"] = false;
                 break;
 
-            case sf::Keyboard::Q:
+            case sf::Keyboard::Scancode::Q:
                 m_key_is_pressed["Q"] = false;
                 break;
 
-            case sf::Keyboard::E:
+            case sf::Keyboard::Scancode::E:
                 m_key_is_pressed["E"] = false;
                 break;
             
             default:
                 break;
             }
-            
-        default:
-            break;
         }
     }
 }

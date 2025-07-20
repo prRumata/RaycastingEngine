@@ -104,13 +104,17 @@ Render::Render(Player& player, sf::RenderWindow& window, Map& map) :
     m_window(window),
     m_map(map),
     m_rays(),
-    m_lines(sf::Lines, SCREEN_WIDTH * 2),
-    m_buffer(sf::Lines),
+    m_lines(sf::PrimitiveType::Lines, SCREEN_WIDTH * 2),
+    m_buffer(sf::PrimitiveType::Lines),
+    m_fps_text(m_font,std::to_string(m_fps), 18),
     // m_pixels(new sf::Vertex[SCREEN_HEIGHT * SCREEN_WIDTH]),
     m_fps(0.0f)
     
 {
-    m_buffer.create(size_t(SCREEN_WIDTH));
+    if (!m_buffer.create(size_t(SCREEN_WIDTH)))
+    {
+        std::cerr << "Error: failed to create buffer for lines" << std::endl;
+    }
 
     // for (size_t x = 0; x < SCREEN_WIDTH; ++x)
     // {
@@ -120,9 +124,11 @@ Render::Render(Player& player, sf::RenderWindow& window, Map& map) :
     //     }
     // }
     m_font.setSmooth(false);
-    m_font.loadFromFile("res/font.otf");
-    m_fps_text = sf::Text(std::to_string(m_fps), m_font, 18);
-    m_fps_text.setPosition(10, 10);
+    if (!m_font.openFromFile("res/font.otf"))
+    {
+        std::cerr << "Error: failed to load font" << std::endl;
+    }
+    m_fps_text.setPosition({10, 10});
 }
 
 Render::~Render()
@@ -180,10 +186,10 @@ void Render::render()
     {
         sf::Color wall_color =
         {
-            sf::Uint8(0xa8 / (m_rays[x].getLength() / 15.0f + 1.0f)),
-            sf::Uint8(0x99 / (m_rays[x].getLength() / 15.0f + 1.0f)),
-            sf::Uint8(0x84 / (m_rays[x].getLength() / 15.0f + 1.0f)),
-            sf::Uint8(0xFF / (m_rays[x].getLength() / 15.0f + 1.0f))
+            std::uint8_t(0xa8 / (m_rays[x].getLength() / 15.0f + 1.0f)),
+            std::uint8_t(0x99 / (m_rays[x].getLength() / 15.0f + 1.0f)),
+            std::uint8_t(0x84 / (m_rays[x].getLength() / 15.0f + 1.0f)),
+            std::uint8_t(0xFF / (m_rays[x].getLength() / 15.0f + 1.0f))
         };
 
         m_lines[x * 2].position = sf::Vector2f(x, (SCREEN_HEIGHT / 2.0f) -
